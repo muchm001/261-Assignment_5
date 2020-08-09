@@ -44,29 +44,99 @@ class MinHeap:
         """
         return self.heap.length() == 0
 
+    @staticmethod
+    def left(i):
+        """
+        TODO: Write this implementation
+        """
+        return int(2 * i + 1)
+
+    @staticmethod
+    def right(i):
+        """
+        TODO: Write this implementation
+        """
+        return int(2 * (i + 1))
+
+    @staticmethod
+    def parent(i):
+        """
+        TODO: Write this implementation
+        """
+        return int((i - 1) / 2)
+
     def add(self, node: object) -> None:
         """
         TODO: Write this implementation
         """
-        pass
+        if self.heap.length() == 0:
+            self.heap.append(node)
+        else:
+            index = self.heap.length()
+            self.heap.append(node)
+            self.bubble_up(index)
+
+        return
+
+    def bubble_up(self, i):
+        """
+        TODO: Write this implementation
+        """
+        p = self.parent(i)
+        while i > 0 and self.heap.get_at_index(i) < self.heap.get_at_index(p):
+            self.heap.swap(i, p)
+            i = p
+            p = self.parent(i)
 
     def get_min(self) -> object:
         """
         TODO: Write this implementation
         """
-        return None
+        if self.heap.length() == 0:
+            raise MinHeapException
+        else:
+            return self.heap.get_at_index(0)
 
     def remove_min(self) -> object:
         """
         TODO: Write this implementation
         """
-        return None
+        if self.heap.length() == 0:
+            raise MinHeapException
+        else:
+            self.heap.swap(0, self.heap.length() - 1)
+            x = self.heap.pop()
+            self.trickle_down(0)
+            return x
+
+    def trickle_down(self, i):
+        """
+        TODO: Write this implementation
+        """
+        while i >= 0:
+            j = -1
+            r = self.right(i)
+            if r < self.heap.length() and self.heap.get_at_index(r) < self.heap.get_at_index(i):
+                l = self.left(i)
+                if self.heap.get_at_index(l) < self.heap.get_at_index(r):
+                    j = l
+                else:
+                    j = r
+            else:
+                l = self.left(i)
+                if l < self.heap.length() and self.heap.get_at_index(l) < self.heap.get_at_index(i):
+                    j = l
+            if j >= 0:
+                self.heap.swap(j, i)
+            i = j
 
     def build_heap(self, da: DynamicArray) -> None:
         """
         TODO: Write this implementation
         """
-        pass
+        old = DynamicArray()
+        old = self.heap
+        
 
 
 # BASIC TESTING
@@ -88,13 +158,11 @@ if __name__ == '__main__':
         h.add(value)
         print(h)
 
-
     print("\nPDF - get_min example 1")
     print("-----------------------")
     h = MinHeap(['fish', 'bird'])
     print(h)
     print(h.get_min(), h.get_min())
-
 
     print("\nPDF - remove_min example 1")
     print("--------------------------")
@@ -102,7 +170,6 @@ if __name__ == '__main__':
     while not h.is_empty():
         print(h, end=' ')
         print(h.remove_min())
-
 
     print("\nPDF - build_heap example 1")
     print("--------------------------")

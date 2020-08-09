@@ -143,7 +143,22 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        pass
+        new = HashMap(new_capacity, self.hash_function)
+        length = self.buckets.length()
+        copy = self
+
+        if new_capacity < 1:
+            return
+
+        for i in range(length):
+            if self.buckets.get_at_index(i).length() != 0:
+                for node in self.buckets.get_at_index(i):
+                    new.put(node.key, node.value)
+        self.buckets = new.buckets
+        self.size = new.size
+        self.capacity = new.capacity
+
+
 
     def get_keys(self) -> DynamicArray:
         """
